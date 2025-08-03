@@ -1,6 +1,20 @@
 {
+  "version": 2,
+  "builds": [
+    {
+      "src": "api/proxy.js",
+      "use": "@vercel/node"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "/api/proxy.js",
+      "methods": ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"]
+    }
+  ],
   "functions": {
-    "proxy.js": {
+    "api/proxy.js": {
       "memory": 1024,
       "maxDuration": 30
     }
