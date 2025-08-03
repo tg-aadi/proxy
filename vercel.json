@@ -1,7 +1,8 @@
 {
-  "dependencies": {
-    "express": "^4.18.2",
-    "node-fetch": "^2.6.7",
-    "jsdom": "^22.1.0"
+  "functions": {
+    "proxy.js": {
+      "memory": 1024,
+      "maxDuration": 30
+    }
   }
 }
