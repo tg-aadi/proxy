@@ -2,23 +2,20 @@
     "version": 2,
     "framework": null,
     "functions": {
-        "api/miniproxy.php": {
-            "runtime": "vercel-php@0.7.0",
+        "api/miniproxy.js": {
+            "runtime": "nodejs18.x",
             "memory": 3008,
             "maxDuration": 60
         }
     },
     "routes": [
         {
-            "src": "/api/miniproxy.php(.*)",
-            "dest": "/api/miniproxy.php?url=$1"
+            "src": "/api/miniproxy(.*)",
+            "dest": "/api/miniproxy.js?url=$1"
         },
         {
             "src": "/(.*)",
-            "dest": "/api/miniproxy.php?url=$1"
+            "dest": "/api/miniproxy.js?url=$1"
         }
-    ],
-    "env": {
-        "PHP_VERSION": "8.0"
-    }
+    ]
 }
