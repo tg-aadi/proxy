@@ -1,0 +1,9 @@
+{
+  "version": 2,
+  "routes": [
+    {
+      "src": "/proxy",
+      "dest": "/api/proxy.js"
+    }
+  ]
+}
