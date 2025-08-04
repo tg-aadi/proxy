@@ -6,35 +6,51 @@ export default async function handler(req, res) {
   }
 
   try {
-    const targetResponse = await fetch(url, {
+    const fetchResponse = await fetch(url, {
       method: req.method,
       headers: {
-        // Optional: Add minimal headers; avoid passing user's headers
-        "User-Agent": "Mozilla/5.0 (Vercel Proxy)",
+        "User-Agent": "Mozilla/5.0 (Vercel Streaming Proxy)"
       },
       body: req.method === "POST" ? req.body : undefined,
-      redirect: "follow",
+      redirect: "follow"
     });
 
-    // Forward status
-    res.status(targetResponse.status);
+    res.status(fetchResponse.status);
 
-    // Copy response headers except those that may break things
-    for (let [key, value] of targetResponse.headers.entries()) {
-      if (
-        !["content-encoding", "content-length", "transfer-encoding", "connection"].includes(
-          key.toLowerCase()
-        )
-      ) {
+    // Forward all relevant headers except transfer-encoding
+    fetchResponse.headers.forEach((value, key) => {
+      if (!["transfer-encoding", "content-encoding"].includes(key.toLowerCase())) {
         res.setHeader(key, value);
       }
+    });
+
+    // Stream the response
+    if (fetchResponse.body) {
+      const reader = fetchResponse.body.getReader();
+
+      const encoder = new TextEncoder();
+      const stream = new ReadableStream({
+        async start(controller) {
+          while (true) {
+            const { done, value } = await reader.read();
+            if (done) break;
+            controller.enqueue(value);
+          }
+          controller.close();
+        }
+      });
+
+      return new Response(stream, {
+        status: fetchResponse.status,
+        headers: fetchResponse.headers
+      }).body.pipeTo(res);
+    } else {
+      res.end();
     }
 
-    // Stream body
-    const data = await targetResponse.arrayBuffer();
-    res.end(Buffer.from(data));
   } catch (error) {
-    console.error("Fetch error:", error);
-    res.status(502).send("❌ Error fetching target URL.");
+    console.error("Proxy error:", error);
+    res.status(502).send("❌ Proxy failed to load the resource.");
   }
 }
+
