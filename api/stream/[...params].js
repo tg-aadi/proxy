@@ -19,7 +19,6 @@ export default async function handler(req, res) {
 
   const id = match[1];
   const type = match[2];
-
   const baseUrl = `http://${hostname}/live/${username}/${password}/${id}`;
 
   if (type === 'ts') {
@@ -52,6 +51,7 @@ export default async function handler(req, res) {
     } catch (err) {
       res.status(502).send(`❌ Error: ${err.message}`);
     }
+    return;
   }
 
   if (type === 'm3u8') {
@@ -99,3 +99,4 @@ export default async function handler(req, res) {
     }
   }
 }
+
