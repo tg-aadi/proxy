@@ -1,6 +1,7 @@
 {
-  "version": 2,
-  "routes": [
-    { "src": "/proxy.php", "dest": "/api/proxy.php" }
-  ]
+  "functions": {
+    "api/proxy.php": {
+      "runtime": "vercel-php@0.7.3"
+    }
+  }
 }
