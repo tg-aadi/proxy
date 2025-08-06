@@ -1,0 +1,6 @@
+{
+  "version": 2,
+  "routes": [
+    { "src": "/proxy.php", "dest": "/api/proxy.php" }
+  ]
+}
