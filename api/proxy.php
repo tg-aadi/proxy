@@ -600,4 +600,5 @@ if (stripos($contentType, "text/html") !== false) {
 } else { //This isn't a web page or CSS, so serve unmodified through the proxy with the correct headers (images, JavaScript, etc.)
   header("Content-Length: " . strlen($responseBody), true);
   echo $responseBody;
+
 }
