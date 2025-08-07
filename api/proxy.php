@@ -16,7 +16,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     exit;
 }
 
-// Rate limiting (using session for simplicity; use a database for production)
+// Rate limiting (session-based; use a database for production)
 session_start();
 $rateLimitWindow = 15 * 60; // 15 minutes
 $maxRequests = 100;
@@ -74,7 +74,10 @@ curl_setopt($ch, CURLOPT_URL, $targetUrl);
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
 curl_setopt($ch, CURLOPT_HEADER, true);
-//curl_setopt($ch, CURLOPT_NOBODY, false);
+curl_setopt($ch, CURLOPT_NOBODY, false);
+curl_setopt($ch, CURLOPT_ENCODING, ''); // Accept all encodings (gzip, deflate, etc.)
+curl_setopt($ch, CURLOPT_TIMEOUT, 30); // Set timeout to prevent hanging
+curl_setopt($ch, CURLOPT_MAXREDIRS, 10); // Limit redirects
 
 // Forward request method and data
 $method = $_SERVER['REQUEST_METHOD'];
@@ -95,6 +98,7 @@ foreach ($headers as $key => $value) {
     }
 }
 $filteredHeaders[] = 'X-Proxy-Server: PHP-Proxy';
+$filteredHeaders[] = 'Accept-Encoding: gzip, deflate'; // Explicitly request supported encodings
 curl_setopt($ch, CURLOPT_HTTPHEADER, $filteredHeaders);
 
 // Execute request
@@ -102,10 +106,12 @@ $response = curl_exec($ch);
 
 // Handle cURL errors
 if ($response === false) {
+    $error = curl_error($ch);
+    $errno = curl_errno($ch);
     http_response_code(500);
     echo json_encode([
         'error' => 'Proxy error occurred',
-        'message' => curl_error($ch)
+        'message' => "cURL Error ($errno): $error"
     ]);
     curl_close($ch);
     exit;
@@ -114,19 +120,22 @@ if ($response === false) {
 // Get response info
 $headerSize = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
 $statusCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+$contentType = curl_getinfo($ch, CURLINFO_CONTENT_TYPE);
 $headersOut = substr($response, 0, $headerSize);
 $body = substr($response, $headerSize);
 
-// Parse and forward CORS headers
+// Parse and forward relevant headers
 $headerLines = explode("\r\n", $headersOut);
-$corsHeaders = [
+$forwardHeaders = [
     'access-control-allow-origin',
     'access-control-allow-methods',
-    'access-control-allow-headers'
+    'access-control-allow-headers',
+    'content-type',
+    'content-length'
 ];
 foreach ($headerLines as $line) {
-    foreach ($corsHeaders as $corsHeader) {
-        if (stripos($line, $corsHeader) === 0) {
+    foreach ($forwardHeaders as $header) {
+        if (stripos($line, $header) === 0) {
             header($line);
         }
     }
@@ -134,10 +143,18 @@ foreach ($headerLines as $line) {
 
 // Set response status and body
 http_response_code($statusCode);
-echo $body;
+
+// If content is binary (e.g., image, PDF), output directly
+if (strpos($contentType, 'text/') === false && strpos($contentType, 'application/json') === false) {
+    // Ensure binary data is output correctly
+    echo $body;
+} else {
+    // For text-based content, ensure proper encoding
+    echo mb_convert_encoding($body, 'UTF-8', 'auto');
+}
 
 curl_close($ch);
 
-// Simple logging (use a proper logging system in production)
-error_log("[$method] $targetUrl - Status: $statusCode");
+// Logging for debugging
+error_log("[$method] $targetUrl - Status: $statusCode - Content-Type: $contentType");
 ?>
