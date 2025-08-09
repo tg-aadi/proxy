@@ -351,13 +351,13 @@ https://tgaadi.vercel.app/api/star/179.ts
 #EXTINF:-1 tvg-id="223" tvg-name="DD Sports" tvg-logo="https://ltsk-cdn.s3.eu-west-1.amazonaws.com/jumpstart/Temp_Live/cdn/HLS/Channel/imageContent-941-j5mhk5fc-v1/imageContent-941-j5mhk5fc-m1.png" group-title="Sports",DD Sports
 https://tgaadi.vercel.app/api/star/4044.ts
 
-#EXTINF:-1 tvg-id="78" tvg-name="Star Sports 1 Tamil" tvg-logo="https://ltsk-cdn.s3.eu-west-1.amazonaws.com/jumpstart/Temp_Live/cdn/HLS/Channel/imageContent-8301-j7hc0820-v1/imageContent-8301-j7hc0820-m1.png" group-title="Sports",Star Sports 1 Tamil
+#EXTINF:-1 tvg-id="78" tvg-name="Star Sports 1 Tamil" tvg-logo="https://ltsk-cdn.s3.eu-west-1.amazonaws.com/jumpstart/Temp_Live/cdn/HLS/Channel/SS1TAMHD_Thumbnail-v1/SS1TAMHD_Thumbnail.png" group-title="Sports",Star Sports 1 Tamil
 https://tgaadi.vercel.app/api/star/9722.ts
 
-#EXTINF:-1 tvg-id="78" tvg-name="Star Sports 1 Telugu" tvg-logo="https://ltsk-cdn.s3.eu-west-1.amazonaws.com/jumpstart/Temp_Live/cdn/HLS/Channel/imageContent-8301-j7hc0820-v1/imageContent-8301-j7hc0820-m1.png" group-title="Sports",Star Sports 1 Telugu 
+#EXTINF:-1 tvg-id="78" tvg-name="Star Sports 1 Telugu" tvg-logo="https://ltsk-cdn.s3.eu-west-1.amazonaws.com/jumpstart/Temp_Live/cdn/HLS/Channel/SS1TELHD_Thumbnail-v2/SS1TELHD_Thumbnail.png" group-title="Sports",Star Sports 1 Telugu 
 https://tgaadi.vercel.app/api/star/177843.ts
 
-#EXTINF:-1 tvg-id="78" tvg-name="Star Sports 2 Telugu" tvg-logo="https://ltsk-cdn.s3.eu-west-1.amazonaws.com/jumpstart/Temp_Live/cdn/HLS/Channel/imageContent-8301-j7hc0820-v1/imageContent-8301-j7hc0820-m1.png" group-title="Sports",Star Sports 2 Telugu 
+#EXTINF:-1 tvg-id="78" tvg-name="Star Sports 2 Telugu" tvg-logo="https://dvdh7g0f0hwck.cloudfront.net/assets/images/channel/StarSports2TeluguHD_Thumbnail_0b6daeb0-9afa-40f8-9f5d-9c6c99823e12.png" group-title="Sports",Star Sports 2 Telugu 
 https://tgaadi.vercel.app/api/star/379755.ts
 
 #EXTINF:-1 tvg-id="78" tvg-name="Star Sports 1 HD" tvg-logo="https://ltsk-cdn.s3.eu-west-1.amazonaws.com/jumpstart/Temp_Live/cdn/HLS/Channel/imageContent-8301-j7hc0820-v1/imageContent-8301-j7hc0820-m1.png" group-title="Sports",Star Sports 1 HD
